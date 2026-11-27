@@ -1,10 +1,4 @@
-import { CourseCard } from '../components/CourseCard'
-
-const starterCourses = [
-  { title: 'Découvrir Luau', detail: 'Syntaxe, variables et premières instructions', label: 'Débutant' },
-  { title: 'Créer avec Roblox', detail: 'Comprendre les objets et les scripts Roblox', label: 'Parcours' },
-  { title: 'Logique et fonctions', detail: 'Décomposer un problème en petites étapes', label: 'À venir' },
-]
+import { Tutorial } from '../learning/Tutorial'
 
 export default function App() {
   return (
@@ -17,13 +11,10 @@ export default function App() {
         <section className="mt-16 max-w-3xl">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-violet-300">Votre espace d’apprentissage</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">Du premier script à votre prochain jeu Roblox.</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">Luau Academy est en cours de construction. Cette base lance l’application et accueillera les cours, exercices et outils de programmation.</p>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">Apprends Luau pas à pas avec un parcours hors ligne de 12 leçons, des exemples et des exercices guidés pour Roblox Studio.</p>
         </section>
-        <section aria-labelledby="courses-title" className="mt-16">
-          <div className="mb-5 flex items-end justify-between gap-4"><div><p className="text-sm text-slate-500">PARCOURS</p><h2 id="courses-title" className="mt-1 text-2xl font-semibold">Commencer à apprendre</h2></div><span className="rounded-full border border-slate-800 px-3 py-1 text-xs text-slate-400">Fondation de l’application</span></div>
-          <div className="grid gap-4 md:grid-cols-3">{starterCourses.map((course) => <CourseCard key={course.title} {...course} />)}</div>
-        </section>
-        <footer className="mt-16 border-t border-slate-800 pt-5 text-sm text-slate-500">Base de développement · Les fonctionnalités d’apprentissage seront livrées par phases.</footer>
+        <Tutorial />
+        <footer className="mt-12 border-t border-slate-800 pt-5 text-sm text-slate-500">Les exemples montrent du code Luau réel. Cette version ne les exécute pas; teste-les dans Roblox Studio sur Windows ou macOS.</footer>
       </div>
     </main>
   )

@@ -38,6 +38,24 @@ npm run tauri:dev
 
 `npm run tauri:dev` lance Vite et la fenêtre Tauri ensemble. Pour lancer uniquement l’interface dans le navigateur, utilisez `npm run dev`; ce mode ne teste pas le backend Rust.
 
+### Installer Luau Academy dans son compte Arch Linux
+
+Depuis la copie du dépôt, lance le script d’installation :
+
+```bash
+./scripts/install-arch.sh
+```
+
+Le script vérifie Arch Linux, Node.js et Rust, propose d’installer les paquets système manquants avec `pacman`, installe les dépendances du projet, compile l’application et l’installe dans `~/.local/opt/luau-academy`. Il ajoute un raccourci au menu des applications et une commande `~/.local/bin/luau-academy`. L’installation de l’application dans ton compte ne requiert pas root; `sudo` n’est demandé que si des paquets Arch manquent.
+
+Pour retirer l’application et son raccourci :
+
+```bash
+./scripts/install-arch.sh --uninstall
+```
+
+La désinstallation retire uniquement les fichiers installés par ce script. Elle ne supprime ni le dépôt, ni les caches npm/Rust.
+
 ### Icônes
 
 Après `npm ci`, générer les formats d’icônes Tauri depuis le fichier SVG avant de créer les paquets Linux/Windows/macOS ou d’initialiser Android/iOS :
@@ -73,6 +91,12 @@ cargo check --manifest-path src-tauri/Cargo.toml
 ```
 
 L’installation Chromium avec Playwright est nécessaire avant le premier test navigateur. Elle peut utiliser un navigateur déjà installé ou télécharger Chromium.
+
+## Tutoriel Luau intégré
+
+L’application contient un parcours hors ligne de 12 leçons, d’environ 150 minutes : démarrer dans Roblox Studio, variables, conditions, boucles, fonctions, tables, objets et services Roblox, événements, scripts serveur/client, RemoteEvents et validation, ModuleScripts, types Luau stricts, puis un projet final de plaque piège. Chaque leçon donne des explications, un exemple, un exercice et une proposition de correction. La navigation et la validation des leçons fonctionnent; la progression est enregistrée dans le stockage local de l’application.
+
+Les exemples de code sont étudiés et copiés dans Roblox Studio; cette version de Luau Academy ne les exécute pas. Roblox propose officiellement Studio pour Windows et macOS, pas Linux. Les instructions Roblox de ce parcours nécessitent donc Studio sur un ordinateur pris en charge. Voir la [configuration officielle de Roblox Studio](https://create.roblox.com/docs/studio/setup), la [référence Luau](https://luau.org/syntax/) et la [documentation de sécurité client-serveur](https://create.roblox.com/docs/scripting/security/client-server-boundary).
 
 ## Windows 10/11
 
