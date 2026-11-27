@@ -1,0 +1,168 @@
+{
+  "id": "luau-fondamentaux",
+  "title": "Luau, des bases à Roblox",
+  "description": "Un parcours guidé pour apprendre les bases du langage, créer des scripts Roblox et comprendre le modèle client-serveur.",
+  "level": "Débutant → intermédiaire",
+  "estimatedMinutes": 150,
+  "lessons": [
+    {
+      "id": "preparer-studio",
+      "title": "Préparer son environnement",
+      "objective": "Savoir où écrire les scripts et comment lire leur sortie.",
+      "explanation": [
+        "Luau Academy explique le langage et fournit des exemples. Roblox Studio est l’outil officiel pour construire et tester une expérience Roblox. Le code présenté ici est du Luau réel, mais cette première version de Luau Academy ne l’exécute pas.",
+        "Dans Studio, crée une expérience Baseplate. L’Explorateur montre les objets du jeu; Propriétés affiche leurs réglages; Output affiche les messages et erreurs. Pour commencer avec un script côté serveur, ajoute un Script sous ServerScriptService.",
+        "Roblox Studio est officiellement disponible sur Windows et macOS. Luau Academy peut être développée sur Arch Linux, mais Roblox ne répertorie pas Studio comme application Linux prise en charge."
+      ],
+      "steps": [
+        "Ouvre Roblox Studio sur Windows ou macOS et crée une expérience Baseplate.",
+        "Dans l’Explorateur, sélectionne ServerScriptService, puis ajoute un Script.",
+        "Ouvre View > Output afin de voir les sorties du script.",
+        "Utilise Play pour tester, puis Stop pour terminer le test."
+      ],
+      "code": "-- Un commentaire commence par deux tirets.\nprint(\"Bonjour, Luau !\")",
+      "exercise": "Crée un Script nommé FirstScript sous ServerScriptService. Écris un message qui inclut ton prénom, lance Play et vérifie qu’il apparaît dans Output.",
+      "solution": "print(\"Bonjour, Alex !\") -- Remplace Alex par ton prénom."
+    },
+    {
+      "id": "variables-et-valeurs",
+      "title": "Variables et valeurs",
+      "objective": "Stocker des nombres, textes et états dans des variables locales.",
+      "explanation": [
+        "Une variable associe un nom à une valeur. En Luau, préfère local pour limiter une variable au bloc où elle est utilisée. const indique que la variable ne sera pas réassignée.",
+        "Les valeurs courantes sont number, string, boolean et nil. nil représente l’absence de valeur. Luau est progressivement typé : tu peux commencer sans annotations et en ajouter quand elles clarifient ton code."
+      ],
+      "code": "local coins = 12\nlocal playerName = \"Mina\"\nlocal hasKey = false\nlocal missingValue = nil\n\ncoins = coins + 3\nprint(playerName, coins, hasKey, missingValue)",
+      "exercise": "Déclare une variable locale score à 0 et un booléen hasWon à false. Ajoute 10 au score puis affiche les deux valeurs.",
+      "solution": "local score = 0\nlocal hasWon = false\nscore = score + 10\nprint(score, hasWon)"
+    },
+    {
+      "id": "operateurs-et-conditions",
+      "title": "Opérateurs et conditions",
+      "objective": "Choisir quoi faire avec if, elseif et else.",
+      "explanation": [
+        "L’opérateur = affecte une valeur. L’opérateur == compare deux valeurs. Les autres comparaisons sont ~=, <, >, <= et >=. Les opérateurs and, or et not combinent des conditions.",
+        "Un bloc if exécute du code seulement si sa condition est vraie. Un score est un bon exemple : un joueur gagne quand le score atteint un seuil."
+      ],
+      "code": "local score = 75\n\nif score >= 100 then\n    print(\"Niveau terminé !\")\nelseif score >= 50 then\n    print(\"Tu es à mi-chemin.\")\nelse\n    print(\"Continue à jouer.\")\nend",
+      "exercise": "Écris une condition qui affiche \"Accès autorisé\" si hasKey vaut true et \"Clé nécessaire\" dans le cas contraire.",
+      "solution": "local hasKey = true\n\nif hasKey then\n    print(\"Accès autorisé\")\nelse\n    print(\"Clé nécessaire\")\nend"
+    },
+    {
+      "id": "boucles",
+      "title": "Répéter avec des boucles",
+      "objective": "Répéter une action un nombre précis de fois ou parcourir une liste.",
+      "explanation": [
+        "Une boucle for numérique est utile quand le nombre de répétitions est connu. Les tableaux Luau commencent à l’index 1. La longueur d’un tableau séquentiel se lit avec #.",
+        "Une boucle while répète son bloc tant que sa condition est vraie. Vérifie qu’une condition peut devenir fausse, sinon la boucle ne s’arrête pas. Dans Roblox, task.wait() suspend temporairement le fil d’exécution; évite les boucles qui tournent sans pause."
+      ],
+      "code": "local checkpoints = {\"Départ\", \"Pont\", \"Arrivée\"}\n\nfor index = 1, #checkpoints do\n    print(index, checkpoints[index])\nend\n\nfor _, checkpointName in ipairs(checkpoints) do\n    print(\"Point :\", checkpointName)\nend",
+      "exercise": "Crée une liste de trois objets à collecter et affiche chaque nom avec ipairs.",
+      "solution": "local items = {\"Cristal\", \"Clé\", \"Pièce\"}\n\nfor _, itemName in ipairs(items) do\n    print(itemName)\nend"
+    },
+    {
+      "id": "fonctions",
+      "title": "Fonctions et paramètres",
+      "objective": "Regrouper une action réutilisable dans une fonction.",
+      "explanation": [
+        "Une fonction donne un nom à un bloc de travail. Les paramètres transmettent des valeurs à la fonction; return renvoie un résultat. Déclare les fonctions localement sauf si une API demande une autre forme.",
+        "Les annotations de type sont facultatives, mais elles documentent les entrées et la sortie. Dans l’exemple, la fonction attend deux nombres et renvoie un nombre."
+      ],
+      "code": "local function addScore(currentScore: number, points: number): number\n    return currentScore + points\nend\n\nlocal newScore = addScore(20, 5)\nprint(newScore)",
+      "exercise": "Écris une fonction multiply qui reçoit deux nombres, renvoie leur produit, puis affiche le résultat de multiply(6, 7).",
+      "solution": "local function multiply(a: number, b: number): number\n    return a * b\nend\n\nprint(multiply(6, 7))"
+    },
+    {
+      "id": "tables",
+      "title": "Tables : listes et dictionnaires",
+      "objective": "Regrouper plusieurs valeurs dans une table.",
+      "explanation": [
+        "La table est la structure de données principale de Luau. Une liste ordonnée est souvent appelée tableau; un dictionnaire associe des clés à des valeurs. Une table peut contenir d’autres tables.",
+        "Les tables sont des références : affecter une table à une seconde variable ne copie pas son contenu. Les deux variables pointent vers la même table, sauf si tu crées explicitement une copie."
+      ],
+      "code": "local inventory = {\n    \"Potion\",\n    \"Clé\",\n}\n\nlocal playerData = {\n    name = \"Mina\",\n    coins = 25,\n    inventory = inventory,\n}\n\nprint(inventory[1])\nprint(playerData.name, playerData.coins)",
+      "exercise": "Crée un dictionnaire enemy contenant name, health et damage. Affiche le nom et la santé.",
+      "solution": "local enemy = {\n    name = \"Slime\",\n    health = 40,\n    damage = 5,\n}\n\nprint(enemy.name, enemy.health)"
+    },
+    {
+      "id": "services-et-objets",
+      "title": "Services et objets Roblox",
+      "objective": "Accéder au DataModel, récupérer un service et modifier une instance.",
+      "explanation": [
+        "Une expérience Roblox est un arbre d’instances. game est la racine du DataModel, Workspace contient le monde 3D et ServerScriptService héberge du code serveur. game:GetService() récupère un service Roblox.",
+        "WaitForChild() attend qu’un enfant portant le nom demandé existe. Cela évite d’utiliser immédiatement une référence qui n’est pas encore disponible. Les noms sont sensibles aux majuscules et minuscules."
+      ],
+      "code": "local Workspace = game:GetService(\"Workspace\")\nlocal practicePart = Workspace:WaitForChild(\"PracticePart\")\n\npracticePart.Anchored = true\npracticePart.Color = Color3.fromRGB(120, 80, 255)\npracticePart.Transparency = 0.2",
+      "exercise": "Dans Studio, ajoute une Part nommée PracticePart à Workspace. Depuis un Script serveur, récupère-la avec WaitForChild et rends-la ancrée.",
+      "solution": "local Workspace = game:GetService(\"Workspace\")\nlocal practicePart = Workspace:WaitForChild(\"PracticePart\")\npracticePart.Anchored = true"
+    },
+    {
+      "id": "evenements",
+      "title": "Événements et interactions",
+      "objective": "Réagir à un événement Roblox et éviter de déclencher l’action en continu.",
+      "explanation": [
+        "Un événement signale qu’une action s’est produite. Connecte une fonction à un événement avec Connect(). L’événement Touched d’une pièce transmet la pièce qui l’a touchée.",
+        "Touched peut se déclencher plusieurs fois pendant un seul contact. Un debounce est un état qui empêche de lancer une action une seconde fois avant la fin de la première."
+      ],
+      "code": "local trap = script.Parent\nlocal busy = false\n\nlocal function onTouched(hit)\n    if busy then\n        return\n    end\n\n    local character = hit.Parent\n    local humanoid = character and character:FindFirstChildOfClass(\"Humanoid\")\n    if not humanoid then\n        return\n    end\n\n    busy = true\n    humanoid:TakeDamage(10)\n    task.wait(1)\n    busy = false\nend\n\ntrap.Touched:Connect(onTouched)",
+      "exercise": "Place un Script dans une pièce ancrée et affiche dans Output le nom du joueur dont le personnage touche la pièce. Ignore les objets qui n’appartiennent pas à un personnage.",
+      "solution": "local trap = script.Parent\n\ntrap.Touched:Connect(function(hit)\n    local character = hit.Parent\n    local humanoid = character and character:FindFirstChildOfClass(\"Humanoid\")\n    if humanoid then\n        print(character.Name)\n    end\nend)"
+    },
+    {
+      "id": "serveur-client",
+      "title": "Serveur et client",
+      "objective": "Choisir le bon emplacement de script pour chaque responsabilité.",
+      "explanation": [
+        "Roblox est multijoueur : le serveur maintient l’état partagé et les clients présentent l’interface et les effets locaux. Un Script avec le contexte serveur est adapté aux règles et à l’état du jeu. Un LocalScript ou un Script configuré pour le contexte client sert aux entrées et à l’interface.",
+        "ServerScriptService est un emplacement courant pour les Scripts serveur. StarterPlayerScripts et StarterGui sont des emplacements courants pour le code côté client. Les ModuleScripts placés dans ReplicatedStorage sont accessibles aux deux côtés; ne mets pas de secrets ou de logique d’autorité dans un module répliqué."
+      ],
+      "code": "-- Script serveur, par exemple dans ServerScriptService\nlocal Players = game:GetService(\"Players\")\n\nPlayers.PlayerAdded:Connect(function(player)\n    print(player.Name .. \" a rejoint le serveur\")\nend)",
+      "exercise": "Classe ces actions côté serveur ou côté client : décider d’une récompense, afficher une animation d’interface, vérifier le solde d’un joueur.",
+      "solution": "Décider d’une récompense : serveur. Afficher une animation d’interface : client. Vérifier le solde d’un joueur : serveur."
+    },
+    {
+      "id": "remote-events-securite",
+      "title": "RemoteEvents et validation",
+      "objective": "Faire communiquer client et serveur sans faire confiance aux données du client.",
+      "explanation": [
+        "Un RemoteEvent transmet une demande de façon asynchrone entre client et serveur. Crée l’objet BuyRequest dans ReplicatedStorage. Le LocalScript peut demander un achat avec FireServer; le serveur reçoit la demande avec OnServerEvent.",
+        "Le serveur doit vérifier les types, les valeurs, les permissions, les distances et les limites de fréquence pertinentes avant de modifier l’état du jeu. Ne laisse jamais le client choisir librement le montant de sa récompense ou le solde à débiter."
+      ],
+      "code": "-- LocalScript : envoie une demande, ne décide pas du prix\nlocal ReplicatedStorage = game:GetService(\"ReplicatedStorage\")\nlocal buyRequest = ReplicatedStorage:WaitForChild(\"BuyRequest\")\nbuyRequest:FireServer(\"speedBoost\")\n\n-- Script dans ServerScriptService : valide la demande\nlocal ReplicatedStorage = game:GetService(\"ReplicatedStorage\")\nlocal Players = game:GetService(\"Players\")\nlocal buyRequest = ReplicatedStorage:WaitForChild(\"BuyRequest\")\nlocal allowedItems = { speedBoost = true }\nlocal lastRequest = {}\n\nbuyRequest.OnServerEvent:Connect(function(player, itemId)\n    if typeof(itemId) ~= \"string\" or not allowedItems[itemId] then\n        return\n    end\n\n    local now = os.clock()\n    if now - (lastRequest[player] or 0) < 1 then\n        return\n    end\n    lastRequest[player] = now\n\n    -- Vérifier et débiter la monnaie conservée par le serveur ici.\nend)\n\nPlayers.PlayerRemoving:Connect(function(player)\n    lastRequest[player] = nil\nend)",
+      "exercise": "Un client envoie un nombre de pièces à gagner. Explique pourquoi le serveur ne doit pas utiliser ce nombre directement et propose une valeur qu’il peut envoyer à la place.",
+      "solution": "Le client peut envoyer n’importe quel montant. Il peut seulement demander une action autorisée, par exemple l’identifiant d’un objet. Le serveur choisit lui-même le prix et vérifie le solde et le contexte avant de modifier la progression."
+    },
+    {
+      "id": "modules-et-types",
+      "title": "Modules et types Luau",
+      "objective": "Réutiliser du code et documenter sa forme avec --!strict et des types.",
+      "explanation": [
+        "Un ModuleScript renvoie une seule valeur avec return, souvent une table de fonctions. Un autre script charge cette valeur avec require(). Un module s’exécute une fois par environnement Luau; le serveur et le client ont des environnements séparés.",
+        "--!strict demande au vérificateur Luau de signaler davantage d’incohérences de type. Décris les données avec un type alias. Les types améliorent les retours de l’éditeur et rendent les contrats plus faciles à lire, mais ne remplacent pas la validation des données reçues du réseau."
+      ],
+      "code": "-- ModuleScript nommé ScoreUtils\n--!strict\n\nlocal ScoreUtils = {}\n\nfunction ScoreUtils.add(current: number, points: number): number\n    return current + points\nend\n\nreturn ScoreUtils\n\n-- Dans un autre Script du même côté\nlocal ServerScriptService = game:GetService(\"ServerScriptService\")\nlocal ScoreUtils = require(ServerScriptService.ScoreUtils)\nprint(ScoreUtils.add(10, 5))",
+      "exercise": "Écris un ModuleScript nommé StringUtils avec une fonction capitalizeFirst(text: string): string qui met la première lettre en majuscule et renvoie le texte.",
+      "solution": "--!strict\nlocal StringUtils = {}\n\nfunction StringUtils.capitalizeFirst(text: string): string\n    return string.upper(string.sub(text, 1, 1)) .. string.sub(text, 2)\nend\n\nreturn StringUtils"
+    },
+    {
+      "id": "projet-final",
+      "title": "Projet final : une plaque piège",
+      "objective": "Assembler variables, fonctions, conditions, événements, objets et test dans Studio.",
+      "explanation": [
+        "Le projet final crée une plaque qui inflige des dégâts une seule fois par seconde et change de couleur pendant sa recharge. Le Script doit être placé sous une Part dans Workspace. Le serveur garde le contrôle des dégâts.",
+        "Lis le script de haut en bas : on récupère l’objet, on déclare l’état de recharge, on définit la fonction d’événement, puis on connecte cette fonction à Touched."
+      ],
+      "steps": [
+        "Dans Studio, crée une Part dans Workspace, ancre-la et renomme-la Trap.",
+        "Ajoute un Script sous Trap et remplace son contenu par l’exemple.",
+        "Lance Play, touche la plaque avec ton personnage et observe sa couleur et la santé.",
+        "Modifie le nombre de dégâts et la durée de recharge; relance Play après chaque changement.",
+        "Teste aussi en touchant la plaque avec une autre pièce pour vérifier qu’elle ignore ce qui n’est pas un personnage."
+      ],
+      "code": "--!strict\nlocal trap = script.Parent :: BasePart\nlocal busy = false\n\nlocal function onTouched(hit: BasePart)\n    if busy then\n        return\n    end\n\n    local character = hit.Parent\n    local humanoid = character and character:FindFirstChildOfClass(\"Humanoid\")\n    if not humanoid then\n        return\n    end\n\n    busy = true\n    trap.Color = Color3.fromRGB(255, 80, 80)\n    humanoid:TakeDamage(10)\n\n    task.wait(1)\n\n    trap.Color = Color3.fromRGB(120, 80, 255)\n    busy = false\nend\n\ntrap.Touched:Connect(onTouched)",
+      "exercise": "Ajoute un effet sonore quand le piège se déclenche. Crée un Sound comme enfant de Trap, configure son SoundId dans Studio et appelle Play() après la validation du Humanoid.",
+      "solution": "local sound = trap:FindFirstChildOfClass(\"Sound\")\nif sound then\n    sound:Play()\nend",
+      "nextSteps": "Pour aller plus loin, transforme busy en table de recharge par personnage, crée plusieurs pièges avec un ModuleScript, puis vérifie les dégâts en test multijoueur. Garde les décisions de dégâts et de récompense sur le serveur."
+    }
+  ]
+}
