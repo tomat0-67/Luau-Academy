@@ -38,6 +38,14 @@ npm run tauri:dev
 
 `npm run tauri:dev` lance Vite et la fenêtre Tauri ensemble. Pour lancer uniquement l’interface dans le navigateur, utilisez `npm run dev`; ce mode ne teste pas le backend Rust.
 
+### Icônes
+
+Après `npm ci`, générer les formats d’icônes Tauri depuis le fichier SVG avant de créer les paquets Linux/Windows/macOS ou d’initialiser Android/iOS :
+
+```bash
+npm run tauri -- icon src-tauri/icons/icon.svg
+```
+
 ### Build Linux
 
 Créer les paquets Linux configurés par Tauri :
@@ -90,6 +98,7 @@ export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 "$ANDROID_HOME/ndk" | tail -n 1)"
 export PATH="$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin"
 rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 npm ci
+npm run tauri -- icon src-tauri/icons/icon.svg
 npm run android:init
 npm run android:dev
 ```
@@ -104,6 +113,7 @@ Les builds iOS ne peuvent être créés que sur macOS avec la version complète 
 brew install cocoapods
 rustup target add aarch64-apple-ios x86_64-apple-ios aarch64-apple-ios-sim
 npm ci
+npm run tauri -- icon src-tauri/icons/icon.svg
 npm run ios:init
 npm run ios:dev
 ```
