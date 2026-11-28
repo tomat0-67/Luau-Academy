@@ -10,6 +10,9 @@ This roadmap records work not yet delivered; entries are not implemented feature
 - [x] Rust application shell and SQLite plugin preparation
 - [x] Vitest and Playwright setup
 - [x] Linux desktop development path and mobile setup instructions
+- [x] Responsive application shell with desktop sidebar and touch-friendly mobile navigation
+- [x] Shared design tokens, reusable interface primitives, dark and light themes, and reduced-motion preference
+- [x] Dashboard and existing learning path screens; unfinished sections are clearly marked as unavailable
 - [ ] Validate desktop build on Windows
 - [ ] Generate and validate Android project on Android SDK host
 - [ ] Generate and validate iOS project on macOS/Xcode host
