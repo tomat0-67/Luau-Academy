@@ -39,3 +39,11 @@ Keep presentation components independent of platform APIs. Put native storage, f
 ## Platform notes
 
 Linux and Windows desktop builds use Tauri's desktop targets. Android project generation can be initiated with Tauri's Android CLI after installing the Android SDK/NDK. iOS project generation and builds require macOS and Xcode. A successful Linux build does not establish Windows or mobile compatibility; those require builds on the appropriate host and toolchain.
+
+## Design system
+
+- `src/components/ui.tsx` contains shared accessible primitives: buttons, cards, badges, progress bars, labelled fields, tooltips, tabs, dropdowns, dialogs, toasts, icons, and code blocks.
+- `src/styles/index.css` owns semantic visual tokens (surface, text, border, accent, and shadow colors) and responsive desktop/mobile layouts.
+- Dark and light themes are implemented and persisted in local storage. Reduced motion can also be enabled in settings; the operating system's reduced-motion preference is respected by default styles.
+- Navigation entries are actionable only when a corresponding screen exists. Unimplemented destinations are labelled “À venir” and rendered as non-interactive items.
+- The mobile navigation prioritizes the dashboard, learning path, and other destinations; secondary destinations are grouped under “Plus”.
