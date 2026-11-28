@@ -41,6 +41,32 @@ git clone https://github.com/tomat0-67/Luau-Academy.git
 cd Luau-Academy
 ```
 
+#### Si `git clone` indique que le dossier existe déjà
+
+Ne supprime pas le dossier : il peut contenir des modifications. Vérifie d’abord qu’il s’agit bien du dépôt Luau Academy et regarde son état :
+
+```bash
+git -C ~/Luau-Academy remote get-url origin
+git -C ~/Luau-Academy status --short --branch
+```
+
+Si l’adresse affichée est `https://github.com/tomat0-67/Luau-Academy.git` et que tu n’as pas de modifications locales à garder, mets à jour cette copie puis lance l’installation :
+
+```bash
+cd ~/Luau-Academy
+git pull --ff-only origin main
+./scripts/install-arch.sh
+```
+
+Si `git status` affiche des fichiers modifiés, sauvegarde-les avant la mise à jour. Si le dossier n’est pas le bon dépôt, clone dans un autre dossier au lieu de l’écraser :
+
+```bash
+cd ~
+git clone https://github.com/tomat0-67/Luau-Academy.git Luau-Academy-fresh
+cd Luau-Academy-fresh
+./scripts/install-arch.sh
+```
+
 Si tu préfères un autre emplacement, fais `cd` vers ce dossier avant `git clone` et utilise ce même chemin pour les commandes de mise à jour et de désinstallation ci-dessous.
 
 ### 3. Installer et lancer l’application
