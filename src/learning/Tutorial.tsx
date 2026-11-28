@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Badge, Button, Card, CodeBlock, Field, Icon, ProgressBar } from '../components/ui'
 import { tutorialCourse } from './course'
 
 const storageKey = `luau-academy.completed.${tutorialCourse.id}`
@@ -19,9 +20,11 @@ export function Tutorial() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [completedLessons, setCompletedLessons] = useState<string[]>(readCompletedLessons)
   const [showSolution, setShowSolution] = useState(false)
+  const [query, setQuery] = useState('')
   const lesson = tutorialCourse.lessons[activeIndex]
   const isCompleted = completedLessons.includes(lesson.id)
   const completionPercent = Math.round((completedLessons.length / tutorialCourse.lessons.length) * 100)
+  const filteredLessons = useMemo(() => tutorialCourse.lessons.map((item, index) => ({ item, index })).filter(({ item }) => item.title.toLocaleLowerCase('fr').includes(query.trim().toLocaleLowerCase('fr'))), [query])
 
   function selectLesson(index: number) {
     setActiveIndex(index)
@@ -40,120 +43,48 @@ export function Tutorial() {
     }
   }
 
-  return (
-    <section aria-label="Tutoriel Luau" className="mt-12">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-violet-300">Tutoriel guidé · {tutorialCourse.level}</p>
-          <h2 className="mt-2 text-2xl font-semibold">{tutorialCourse.title}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{tutorialCourse.description}</p>
-        </div>
-        <p className="shrink-0 text-sm text-slate-400">12 leçons · environ {tutorialCourse.estimatedMinutes} minutes</p>
-      </div>
+  return <section aria-label="Tutoriel Luau" className="tutorial-page">
+    <header className="learn-heading">
+      <div><span className="eyebrow">PARCOURS GUIDÉ · {tutorialCourse.level.toLocaleUpperCase('fr')}</span><h1>Du premier script à votre prochain jeu Roblox.</h1><p>Apprends les bases de Luau en construisant, une étape à la fois.</p></div>
+      <Badge tone="green"><span className="online-dot" /> Disponible hors ligne</Badge>
+    </header>
 
-      <div className="grid gap-5 lg:grid-cols-[17rem_minmax(0,1fr)]">
-        <aside className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <div className="mb-4 flex items-center justify-between text-xs text-slate-400">
-            <span>Progression</span><span>{completedLessons.length}/{tutorialCourse.lessons.length}</span>
-          </div>
-          <div
-            aria-label={`Progression du tutoriel : ${completionPercent}%`}
-            aria-valuemax={100}
-            aria-valuemin={0}
-            aria-valuenow={completionPercent}
-            className="mb-4 h-2 overflow-hidden rounded-full bg-slate-800"
-            role="progressbar"
-          >
-            <div className="h-full rounded-full bg-violet-400 transition-all" style={{ width: `${completionPercent}%` }} />
-          </div>
-          <nav aria-label="Leçons du tutoriel" className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
-            {tutorialCourse.lessons.map((item, index) => {
-              const selected = index === activeIndex
-              const done = completedLessons.includes(item.id)
-              return (
-                <button
-                  key={item.id}
-                  aria-current={selected ? 'step' : undefined}
-                  className={`flex min-w-52 items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition lg:min-w-0 ${selected ? 'bg-violet-500/15 text-violet-100 ring-1 ring-violet-400/30' : 'text-slate-400 hover:bg-slate-800 hover:text-white'}`}
-                  onClick={() => selectLesson(index)}
-                  type="button"
-                >
-                  <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs ${done ? 'bg-emerald-500/15 text-emerald-300' : 'bg-slate-800 text-slate-400'}`}>
-                    {done ? '✓' : index + 1}
-                  </span>
-                  <span>{item.title}</span>
-                </button>
-              )
-            })}
-          </nav>
-        </aside>
+    <div className="tutorial-title-row"><div><h2>{tutorialCourse.title}</h2><p>{tutorialCourse.description}</p></div><div className="tutorial-duration"><Icon name="clock" size={16} /><span>{tutorialCourse.lessons.length} leçons · environ {tutorialCourse.estimatedMinutes} minutes</span></div></div>
 
-        <article aria-labelledby="lesson-title" className="min-w-0 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-xs font-medium uppercase tracking-wider text-sky-300">Leçon {activeIndex + 1} / {tutorialCourse.lessons.length}</span>
-            {isCompleted && <span className="text-xs font-medium text-emerald-300">Leçon terminée</span>}
-          </div>
-          <h3 id="lesson-title" className="mt-3 text-2xl font-semibold">{lesson.title}</h3>
-          <p className="mt-2 text-sm text-violet-200">Objectif : {lesson.objective}</p>
-
-          <div className="mt-6 space-y-4 text-sm leading-7 text-slate-300">
-            {lesson.explanation.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-          </div>
-
-          {lesson.steps && (
-            <section aria-label="Étapes pratiques" className="mt-6 rounded-xl border border-slate-800 bg-slate-950/60 p-5">
-              <h4 className="font-semibold">À faire dans Roblox Studio</h4>
-              <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-slate-300">
-                {lesson.steps.map((step) => <li key={step}>{step}</li>)}
-              </ol>
-            </section>
-          )}
-
-          <section className="mt-6" aria-label="Exemple Luau">
-            <h4 className="mb-2 text-sm font-semibold text-slate-200">Exemple Luau</h4>
-            <pre className="overflow-x-auto rounded-xl border border-slate-800 bg-[#07070c] p-4 text-xs leading-6 text-sky-100 sm:text-sm"><code>{lesson.code}</code></pre>
-          </section>
-
-          <section className="mt-6 rounded-xl border border-violet-400/20 bg-violet-500/5 p-5">
-            <h4 className="font-semibold">À toi d’essayer</h4>
-            <p className="mt-2 text-sm leading-6 text-slate-300">{lesson.exercise}</p>
-            <button
-              aria-expanded={showSolution}
-              className="mt-4 rounded-lg border border-violet-400/30 px-3 py-2 text-sm text-violet-200 hover:bg-violet-400/10"
-              onClick={() => setShowSolution((visible) => !visible)}
-              type="button"
-            >
-              {showSolution ? 'Masquer une proposition' : 'Afficher une proposition'}
+    <div className="tutorial-layout">
+      <Card as="aside" className="lesson-sidebar" aria-label="Navigation du cours">
+        <div className="lesson-progress-head"><div><span className="eyebrow">TA PROGRESSION</span><strong>{completedLessons.length}<span>/{tutorialCourse.lessons.length}</span></strong></div><span className="progress-percent">{completionPercent}%</span></div>
+        <ProgressBar label={`Progression du tutoriel : ${completionPercent}%`} value={completionPercent} />
+        <Field id="lesson-search" label="Rechercher une leçon" className="lesson-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ex. variables" />
+        <nav aria-label="Leçons du tutoriel" className="lesson-list">
+          {filteredLessons.map(({ item, index }) => {
+            const selected = index === activeIndex
+            const done = completedLessons.includes(item.id)
+            return <button key={item.id} aria-current={selected ? 'step' : undefined} className={`lesson-link ${selected ? 'is-current' : ''}`} onClick={() => selectLesson(index)} type="button">
+              <span className={`lesson-number ${done ? 'is-done' : ''}`}>{done ? <Icon name="check" size={14} /> : String(index + 1).padStart(2, '0')}</span><span className="lesson-link-title">{item.title}</span><Icon className="lesson-chevron" name="chevron" size={15} />
             </button>
-            {showSolution && <pre className="mt-4 overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs leading-6 text-emerald-100 sm:text-sm"><code>{lesson.solution}</code></pre>}
-          </section>
+          })}
+          {filteredLessons.length === 0 && <p className="empty-filter">Aucune leçon ne correspond à cette recherche.</p>}
+        </nav>
+        <div className="sidebar-course-note"><span className="course-note-icon"><Icon name="spark" size={15} /></span><p>Avance à ton rythme. Ta progression reste sur cet appareil.</p></div>
+      </Card>
 
-          {lesson.nextSteps && <p className="mt-6 rounded-xl border border-slate-800 p-4 text-sm leading-6 text-slate-400"><strong className="text-slate-200">Pour continuer : </strong>{lesson.nextSteps}</p>}
+      <article aria-labelledby="lesson-title" className="lesson-article">
+        <div className="lesson-topline"><Badge tone="blue">LEÇON {String(activeIndex + 1).padStart(2, '0')} <span>/ {String(tutorialCourse.lessons.length).padStart(2, '0')}</span></Badge>{isCompleted && <Badge tone="green"><Icon name="check" size={13} /> Terminée</Badge>}</div>
+        <h2 id="lesson-title">{lesson.title}</h2>
+        <p className="lesson-objective"><Icon name="spark" size={16} /> {lesson.objective}</p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-5">
-            <button
-              className="rounded-lg border border-slate-700 px-4 py-2.5 text-sm text-slate-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
-              disabled={activeIndex === 0}
-              onClick={() => selectLesson(activeIndex - 1)}
-              type="button"
-            >Précédent</button>
-            <div className="flex gap-3">
-              <button
-                aria-pressed={isCompleted}
-                className="rounded-lg border border-emerald-400/30 px-4 py-2.5 text-sm text-emerald-200 hover:bg-emerald-400/10"
-                onClick={toggleCompleted}
-                type="button"
-              >{isCompleted ? 'Annuler la validation' : 'Marquer comme terminée'}</button>
-              <button
-                className="rounded-lg bg-violet-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-40"
-                disabled={activeIndex === tutorialCourse.lessons.length - 1}
-                onClick={() => selectLesson(activeIndex + 1)}
-                type="button"
-              >Suivant</button>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-  )
+        <div className="lesson-body">
+          <div className="lesson-explanation">{lesson.explanation.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+          {lesson.steps && <section className="lesson-steps" aria-label="Étapes pratiques"><h3><span className="step-icon"><Icon name="projects" size={17} /></span>À faire dans Roblox Studio</h3><ol>{lesson.steps.map((step) => <li key={step}>{step}</li>)}</ol></section>}
+          <CodeBlock code={lesson.code} />
+          <section className="exercise-panel" aria-label="Exercice de la leçon"><div className="exercise-heading"><span className="exercise-icon"><Icon name="exercise" /></span><div><span className="eyebrow">À TOI D’ESSAYER</span><h3>Petit exercice</h3></div></div><p>{lesson.exercise}</p><Button variant="secondary" size="sm" aria-expanded={showSolution} onClick={() => setShowSolution((visible) => !visible)}>{showSolution ? 'Masquer une proposition' : 'Afficher une proposition'}</Button>{showSolution && <CodeBlock code={lesson.solution} label="Proposition de correction" />}</section>
+          {lesson.nextSteps && <p className="lesson-next"><strong>Pour continuer</strong><span>{lesson.nextSteps}</span></p>}
+        </div>
+
+        <footer className="lesson-actions"><Button disabled={activeIndex === 0} onClick={() => selectLesson(activeIndex - 1)}><span className="previous-arrow">←</span> Précédent</Button><div className="lesson-actions-end"><Button variant={isCompleted ? 'secondary' : 'ghost'} aria-pressed={isCompleted} onClick={toggleCompleted}>{isCompleted ? <><Icon name="check" size={17} /> Terminée</> : 'Marquer comme terminée'}</Button><Button variant="primary" disabled={activeIndex === tutorialCourse.lessons.length - 1} onClick={() => selectLesson(activeIndex + 1)}>Suivant <Icon name="arrow" size={17} /></Button></div></footer>
+      </article>
+    </div>
+    <p className="learning-disclaimer">Les exemples Luau sont à tester dans Roblox Studio. Cette version de Luau Academy n’exécute pas encore le code.</p>
+  </section>
 }
