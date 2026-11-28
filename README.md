@@ -10,17 +10,19 @@ Application gratuite et open source pour apprendre Luau et le développement Rob
 
 Versions verrouillées par `package-lock.json` et `src-tauri/Cargo.lock` : Tauri CLI 2.12.6 / crates Rust 2.12.7, React 19.3.1, TypeScript 7.0.2, Vite 8.4.0, Tailwind CSS 4.3.5, CodeMirror 6.0.2, Vitest 5.1.2 et Playwright 1.65.1. Pour reproduire l’installation du dépôt, utilisez `npm ci`.
 
-## Arch Linux
+## Installation complète depuis GitHub (Arch Linux)
 
-Installer les dépendances WebKitGTK et les outils de compilation :
+Ces commandes partent d’un terminal Arch Linux et montrent toute l’installation, du système fraîchement préparé jusqu’au lancement de Luau Academy.
+
+### 1. Installer les dépendances système
 
 ```bash
 sudo pacman -Syu
-sudo pacman -S --needed webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool nodejs npm rustup
+sudo pacman -S --needed git webkit2gtk-4.1 base-devel curl wget file openssl appmenu-gtk-module libappindicator-gtk3 librsvg xdotool nodejs npm rustup
 rustup default stable
 ```
 
-Vérifier les outils :
+Vite 8 et Vitest 5 demandent Node.js 22.12 ou plus récent. Tu peux vérifier les outils avec :
 
 ```bash
 node --version
@@ -29,7 +31,50 @@ rustc --version
 cargo --version
 ```
 
-Depuis la racine du dépôt, installer les dépendances JavaScript puis lancer l’application native :
+### 2. Cloner le dépôt
+
+Dans cet exemple, le dépôt sera placé dans ton dossier personnel. Clone le dépôt officiel puis ouvre son dossier :
+
+```bash
+cd ~
+git clone https://github.com/tomat0-67/Luau-Academy.git
+cd Luau-Academy
+```
+
+Si tu préfères un autre emplacement, fais `cd` vers ce dossier avant `git clone` et utilise ce même chemin pour les commandes de mise à jour et de désinstallation ci-dessous.
+
+### 3. Installer et lancer l’application
+
+```bash
+./scripts/install-arch.sh
+```
+
+Le script vérifie les dépendances, génère les icônes, compile l’application et l’installe pour ton compte dans `~/.local/opt/luau-academy`. Il ajoute un raccourci au menu des applications et la commande `~/.local/bin/luau-academy`. Si des paquets Arch manquent, il te propose de les installer avec `sudo pacman`.
+
+Tu peux ensuite lancer l’application depuis le menu ou avec :
+
+```bash
+~/.local/bin/luau-academy
+```
+
+Pour mettre à jour le code et reconstruire l’application après un changement :
+
+```bash
+cd ~/Luau-Academy
+git pull
+./scripts/install-arch.sh
+```
+
+Pour désinstaller l’application et son raccourci, sans supprimer le dépôt ni les caches npm/Rust :
+
+```bash
+cd ~/Luau-Academy
+./scripts/install-arch.sh --uninstall
+```
+
+## Développement et builds sur Arch Linux
+
+Après avoir cloné le dépôt et installé les dépendances système indiquées ci-dessus, lance l’application depuis sa racine :
 
 ```bash
 npm ci
@@ -37,24 +82,6 @@ npm run tauri:dev
 ```
 
 `npm run tauri:dev` lance Vite et la fenêtre Tauri ensemble. Pour lancer uniquement l’interface dans le navigateur, utilisez `npm run dev`; ce mode ne teste pas le backend Rust.
-
-### Installer Luau Academy dans son compte Arch Linux
-
-Depuis la copie du dépôt, lance le script d’installation :
-
-```bash
-./scripts/install-arch.sh
-```
-
-Le script vérifie Arch Linux, Node.js et Rust, propose d’installer les paquets système manquants avec `pacman`, installe les dépendances du projet, compile l’application et l’installe dans `~/.local/opt/luau-academy`. Il ajoute un raccourci au menu des applications et une commande `~/.local/bin/luau-academy`. L’installation de l’application dans ton compte ne requiert pas root; `sudo` n’est demandé que si des paquets Arch manquent.
-
-Pour retirer l’application et son raccourci :
-
-```bash
-./scripts/install-arch.sh --uninstall
-```
-
-La désinstallation retire uniquement les fichiers installés par ce script. Elle ne supprime ni le dépôt, ni les caches npm/Rust.
 
 ### Icônes
 
